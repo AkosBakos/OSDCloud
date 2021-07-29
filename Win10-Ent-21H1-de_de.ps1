@@ -25,7 +25,7 @@ PowerShell -NoL -Com Set-ExecutionPolicy RemoteSigned -Force
 Set Path = %PATH%;C:\Program Files\WindowsPowerShell\Scripts
 Start PowerShell -NoL -W Mi
 Start /Wait PowerShell -NoL -C Install-Module AutopilotOOBE
-#$Computername = 'PoC-' + ((Get-CimInstance -ClassName Win32_BIOS).SerialNumber).Trim()
+REM $Computername = 'PoC-' + ((Get-CimInstance -ClassName Win32_BIOS).SerialNumber).Trim()
 Start-AutopilotOOBE -Title 'EDUBS PoC Autopilot Register' -Hidden AssignedUser,AssignedComputerName -AddToGroup sg-Autopilot -Grouptag sg-Autopilot -Assign -PostAction SysprepReboot
 '@
 
@@ -34,4 +34,4 @@ $AutopilotCMD | Out-File -FilePath 'C:\Windows\Autopilot.cmd' -Encoding ascii -F
 #Restart from WinPE
 Write-Host  -ForegroundColor Green "Restarting in 20 seconds!"
 Start-Sleep -Seconds 20
-#wpeutil reboot
+wpeutil reboot
