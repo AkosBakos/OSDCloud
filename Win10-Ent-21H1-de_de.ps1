@@ -25,8 +25,8 @@ PowerShell -NoL -Com Set-ExecutionPolicy RemoteSigned -Force
 Set Path = %PATH%;C:\Program Files\WindowsPowerShell\Scripts
 Start PowerShell -NoL -W Mi
 Start /Wait PowerShell -NoL -C Install-Module AutopilotOOBE
-$Computername = 'PoC-' + ((Get-CimInstance -ClassName Win32_BIOS).SerialNumber).Trim()
-Start-AutopilotOOBE -Title 'EDUBS PoC Autopilot Register' -AssignedComputerName $Computername -Hidden AssignedUser -AddToGroup sg-Autopilot -Grouptag sg-Autopilot -Assign -PostAction SysprepReboot
+#$Computername = 'PoC-' + ((Get-CimInstance -ClassName Win32_BIOS).SerialNumber).Trim()
+Start-AutopilotOOBE -Title 'EDUBS PoC Autopilot Register' -Hidden AssignedUser,AssignedComputerName -AddToGroup sg-Autopilot -Grouptag sg-Autopilot -Assign -PostAction SysprepReboot
 '@
 
 $AutopilotCMD | Out-File -FilePath 'C:\Windows\Autopilot.cmd' -Encoding ascii -Force
