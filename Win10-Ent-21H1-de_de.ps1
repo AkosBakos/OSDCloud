@@ -17,19 +17,20 @@ Import-Module OSD -Force
 #Start OSDCloud ZTI the RIGHT way
 Write-Host -ForegroundColor Green "Start OSDCloud"
 #Start-OSDCloud -OSLanguage de-de -OSBuild "21H1" -OSEdition Enterprise -ZTI
-Start-OSDCloud -OSLanguage en-us -OSBuild 20H2 -OSEdition Enterprise -ZTI
+Start-OSDCloud -OSLanguage en-us -OSBuild "20H2" -OSEdition Enterprise -ZTI
 
 Write-Host -ForegroundColor Green "Create C:\Windows\Autopilot.cmd"
 $AutopilotCMD = @'
 PowerShell -NoL -Com Set-ExecutionPolicy RemoteSigned -Force
 Set Path = %PATH%;C:\Program Files\WindowsPowerShell\Scripts
 Start PowerShell -NoL -W Mi
-Start /Wait PowerShell -NoL -C Install-Module AutopilotOOBE
+Start /Wait PowerShell -NoL -C Install-Module AutopilotOOBE -Force -Verbose
 REM $Computername = 'PoC-' + ((Get-CimInstance -ClassName Win32_BIOS).SerialNumber).Trim()
-Start-AutopilotOOBE -Title 'EDUBS PoC Autopilot Register' -Hidden AssignedUser,AssignedComputerName -AddToGroup sg-Autopilot -Grouptag sg-Autopilot -Assign -PostAction SysprepReboot
+PowerShell -NoL -C Start-AutopilotOOBE -Title 'EDUBS PoC Autopilot Register' -Hidden AssignedUser,AssignedComputerName -AddToGroup sg-Autopilot -Grouptag sg-Autopilot -Assign -PostAction SysprepReboot
+PowerShell -NoL -C Start-OOBEDeploy -AddNetFX3 -UpdateDrivers -UpdateWindows -RemoveAppx Xbox,Zune
 '@
 
-$AutopilotCMD | Out-File -FilePath 'C:\Windows\Autopilot.cmd' -Encoding ascii -Force
+$AutopilotCMD | Out-File -FilePath 'C:\Windows\System32\Autopilot.cmd' -Encoding ascii -Force
 
 #Restart from WinPE
 Write-Host  -ForegroundColor Green "Restarting in 20 seconds!"
