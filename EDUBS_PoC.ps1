@@ -36,7 +36,7 @@ Set Path = %PATH%;C:\Program Files\WindowsPowerShell\Scripts
 REM Start PowerShell -NoL -W Mi
 Start /Wait PowerShell -NoL -C Install-Module AutopilotOOBE -Force -Verbose
 Start /Wait PowerShell -NoL -C Start-OOBEDeploy -AddNetFX3 -UpdateDrivers -UpdateWindows -RemoveAppx Xbox,Zune
-Restart-Computer -Force
+Start /Wait PowerShell -NoL -C Restart-Computer -Force
 '@
 
 $PostOOBECMD | Out-File -FilePath 'C:\Windows\System32\PostOOBE.cmd' -Encoding ascii -Force
