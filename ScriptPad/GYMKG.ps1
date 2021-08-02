@@ -1,6 +1,39 @@
 
-Write-Host -ForegroundColor Green "Starting OSDCloud ZTI"
-Start-Sleep -Seconds 5
+#================================================
+#   AutopilotOOBE Configuration Staging
+#================================================
+$AutopilotOOBEJson = @'
+{
+    "Assign":  {
+                   "IsPresent":  true
+               },
+    "GroupTag":  "Mittelschulen",
+    "AddToGroup": "sg-GYMKG",
+    "AddToGroupOptions":  [
+                    "sg-GYMKG",
+                    "sg-GYMWM"
+    ],
+    "Hidden":  [
+                   "AssignedComputerName",
+                   "AssignedUser",
+                   "PostAction",
+                   "GroupTag",
+                   "Assign"
+               ],
+    "PostAction":  "SysprepReboot",
+    "Run":  "NetworkingWireless",
+    "Docs":  "https://google.com/",
+    "Title":  "EDUBS PoC Autopilot Register"
+}
+'@
+If (!(Test-Path "C:\ProgramData\OSDeploy")) {
+    New-Item "C:\ProgramData\OSDeploy" -ItemType Directory -Force | Out-Null
+}
+$AutopilotOOBEJson | Out-File -FilePath "C:\ProgramData\OSDeploy\OSDeploy.AutopilotOOBE.json" -Encoding ascii -Force
+
+#================================================
+#   [OS] Starting OSDCloud ZTI
+#================================================
 
 #Change Display Resolution for Virtual Machine
 if ((Get-MyComputerModel) -match 'Virtual') {
@@ -15,7 +48,7 @@ Install-Module OSD -Force
 Write-Host  -ForegroundColor Green "Importing OSD PowerShell Module"
 Import-Module OSD -Force   
 
-#Start OSDCloud ZTI the RIGHT way
+#Start OSDCloud ZTI
 Write-Host -ForegroundColor Green "Start OSDCloud"
 Start-OSDCloud -OSLanguage en-us -OSBuild "20H2" -OSEdition Enterprise -ZTI
 
@@ -23,10 +56,8 @@ Write-Host -ForegroundColor Green "Create C:\Windows\System32\Autopilot.cmd"
 $AutopilotCMD = @'
 PowerShell -NoL -Com Set-ExecutionPolicy RemoteSigned -Force
 Set Path = %PATH%;C:\Program Files\WindowsPowerShell\Scripts
-REM Start PowerShell -NoL -W Mi
 Start /Wait PowerShell -NoL -C Install-Module AutopilotOOBE -Force -Verbose
-REM $Computername = 'PoC-' + ((Get-CimInstance -ClassName Win32_BIOS).SerialNumber).Trim()
-Start /Wait PowerShell -NoL -C Start-AutopilotOOBE -Title 'EDUBS PoC Autopilot Register' -Hidden AssignedUser,AssignedComputerName -AddToGroup sg-GYMKG -Grouptag Mittelschulen -Assign -PostAction SysprepReboot
+Start /Wait PowerShell -NoL -C Start-AutopilotOOBE  
 '@
 $AutopilotCMD | Out-File -FilePath 'C:\Windows\System32\Autopilot.cmd' -Encoding ascii -Force
 
