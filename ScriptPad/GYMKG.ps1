@@ -1,6 +1,27 @@
 
 #================================================
-#   AutopilotOOBE Configuration Staging
+#   [OS] Starting OSDCloud ZTI
+#================================================
+
+#Change Display Resolution for Virtual Machine
+if ((Get-MyComputerModel) -match 'Virtual') {
+    Write-Host  -ForegroundColor Green "Setting Display Resolution to 1600x"
+    Set-DisRes 1600
+}
+
+#Make sure I have the latest OSD Content
+Write-Host -ForegroundColor Green "Updating OSD PowerShell Module"
+Install-Module OSD -Force
+
+Write-Host  -ForegroundColor Green "Importing OSD PowerShell Module"
+Import-Module OSD -Force   
+
+#Start OSDCloud ZTI
+Write-Host -ForegroundColor Green "Start OSDCloud"
+Start-OSDCloud -OSLanguage en-us -OSBuild "20H2" -OSEdition Enterprise -ZTI
+
+#================================================
+#  [PostOS] AutopilotOOBE Configuration Staging
 #================================================
 $AutopilotOOBEJson = @'
 {
@@ -31,27 +52,6 @@ If (!(Test-Path "C:\ProgramData\OSDeploy")) {
 }
 $AutopilotOOBEJson | Out-File -FilePath "C:\ProgramData\OSDeploy\OSDeploy.AutopilotOOBE.json" -Encoding ascii -Force
 
-#================================================
-#   [OS] Starting OSDCloud ZTI
-#================================================
-
-#Change Display Resolution for Virtual Machine
-if ((Get-MyComputerModel) -match 'Virtual') {
-    Write-Host  -ForegroundColor Green "Setting Display Resolution to 1600x"
-    Set-DisRes 1600
-}
-
-#Make sure I have the latest OSD Content
-Write-Host -ForegroundColor Green "Updating OSD PowerShell Module"
-Install-Module OSD -Force
-
-Write-Host  -ForegroundColor Green "Importing OSD PowerShell Module"
-Import-Module OSD -Force   
-
-#Start OSDCloud ZTI
-Write-Host -ForegroundColor Green "Start OSDCloud"
-Start-OSDCloud -OSLanguage en-us -OSBuild "20H2" -OSEdition Enterprise -ZTI
-
 Write-Host -ForegroundColor Green "Create C:\Windows\System32\Autopilot.cmd"
 $AutopilotCMD = @'
 PowerShell -NoL -Com Set-ExecutionPolicy RemoteSigned -Force
@@ -61,6 +61,9 @@ Start /Wait PowerShell -NoL -C Start-AutopilotOOBE
 '@
 $AutopilotCMD | Out-File -FilePath 'C:\Windows\System32\Autopilot.cmd' -Encoding ascii -Force
 
+#================================================
+#  [PostOS] AutopilotOOBE Configuration Staging
+#================================================
 Write-Host -ForegroundColor Green "Create C:\Windows\System32\PostOOBE.cmd"
 $PostOOBECMD = @'
 PowerShell -NoL -Com Set-ExecutionPolicy RemoteSigned -Force

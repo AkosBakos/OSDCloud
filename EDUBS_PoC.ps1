@@ -9,10 +9,10 @@ if ((Get-MyComputerModel) -match 'Virtual') {
 
 #Make sure I have the latest OSD Content
 Write-Host -ForegroundColor Green "Updating OSD PowerShell Module"
-Install-Module OSD -Force -Verbose
+Install-Module OSD -Force
 
 Write-Host  -ForegroundColor Green "Importing OSD PowerShell Module"
-Import-Module OSD -Force -Verbose
+Import-Module OSD -Force
 
 #Start OSDCloudScriptPad
 Write-Host -ForegroundColor Green "Start OSDCloudScriptPad"
