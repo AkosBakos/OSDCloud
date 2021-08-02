@@ -9,39 +9,11 @@ if ((Get-MyComputerModel) -match 'Virtual') {
 
 #Make sure I have the latest OSD Content
 Write-Host -ForegroundColor Green "Updating OSD PowerShell Module"
-Install-Module OSD -Force
+Install-Module OSD -Force -Verbose
 
 Write-Host  -ForegroundColor Green "Importing OSD PowerShell Module"
-Import-Module OSD -Force   
+Import-Module OSD -Force -Verbose
 
-#Start OSDCloud ZTI the RIGHT way
-Write-Host -ForegroundColor Green "Start OSDCloud"
-Start-OSDCloud -OSLanguage en-us -OSBuild "20H2" -OSEdition Enterprise -ZTI
-
-Write-Host -ForegroundColor Green "Create C:\Windows\System32\Autopilot.cmd"
-$AutopilotCMD = @'
-PowerShell -NoL -Com Set-ExecutionPolicy RemoteSigned -Force
-Set Path = %PATH%;C:\Program Files\WindowsPowerShell\Scripts
-REM Start PowerShell -NoL -W Mi
-Start /Wait PowerShell -NoL -C Install-Module AutopilotOOBE -Force -Verbose
-REM $Computername = 'PoC-' + ((Get-CimInstance -ClassName Win32_BIOS).SerialNumber).Trim()
-Start /Wait PowerShell -NoL -C Start-AutopilotOOBE -Title 'EDUBS PoC Autopilot Register' -Hidden AssignedUser,AssignedComputerName -AddToGroup sg-Autopilot -Grouptag sg-Autopilot -Assign -PostAction SysprepReboot
-'@
-$AutopilotCMD | Out-File -FilePath 'C:\Windows\System32\Autopilot.cmd' -Encoding ascii -Force
-
-Write-Host -ForegroundColor Green "Create C:\Windows\System32\PostOOBE.cmd"
-$PostOOBECMD = @'
-PowerShell -NoL -Com Set-ExecutionPolicy RemoteSigned -Force
-Set Path = %PATH%;C:\Program Files\WindowsPowerShell\Scripts
-REM Start PowerShell -NoL -W Mi
-Start /Wait PowerShell -NoL -C Install-Module AutopilotOOBE -Force -Verbose
-Start /Wait PowerShell -NoL -C Start-OOBEDeploy -AddNetFX3 -UpdateDrivers -UpdateWindows -RemoveAppx Xbox,Zune
-Start /Wait PowerShell -NoL -C Restart-Computer -Force
-'@
-
-$PostOOBECMD | Out-File -FilePath 'C:\Windows\System32\PostOOBE.cmd' -Encoding ascii -Force
-
-#Restart from WinPE
-Write-Host  -ForegroundColor Green "Restarting in 20 seconds!"
-Start-Sleep -Seconds 20
-wpeutil reboot
+#Start OSDCloudScriptPad
+Write-Host -ForegroundColor Green "Start OSDCloudScriptPad"
+Start-ScriptPad -GitOwner AkosBakos -GitRepo OSDCloud -GitPath ScriptPad
