@@ -26,7 +26,7 @@ Set Path = %PATH%;C:\Program Files\WindowsPowerShell\Scripts
 REM Start PowerShell -NoL -W Mi
 Start /Wait PowerShell -NoL -C Install-Module AutopilotOOBE -Force -Verbose
 REM $Computername = 'PoC-' + ((Get-CimInstance -ClassName Win32_BIOS).SerialNumber).Trim()
-Start /Wait PowerShell -NoL -C Start-AutopilotOOBE -Title 'EDUBS PoC Autopilot Register' -Hidden AssignedUser,AssignedComputerName -AddToGroup GYMKG -Grouptag Mittelschulen -Assign -PostAction SysprepReboot
+Start /Wait PowerShell -NoL -C Start-AutopilotOOBE -Title 'EDUBS PoC Autopilot Register' -Hidden AssignedUser,AssignedComputerName -AddToGroup sg-GYMKG -Grouptag Mittelschulen -Assign -PostAction SysprepReboot
 '@
 $AutopilotCMD | Out-File -FilePath 'C:\Windows\System32\Autopilot.cmd' -Encoding ascii -Force
 
