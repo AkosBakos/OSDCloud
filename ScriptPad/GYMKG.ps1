@@ -23,7 +23,7 @@ $Params = @{
     ZTI = $true
 }
 Start-OSDCloud @Params
-
+<#
 #================================================
 #   PostOS Audit Mode OOBEDeploy
 #================================================
@@ -59,7 +59,7 @@ if (-NOT (Test-Path $PantherUnattendPath)) {
 $AuditUnattendPath = Join-Path $PantherUnattendPath 'Invoke-OSDSpecialize.xml'
 $AuditUnattendXml | Out-File -FilePath $AuditUnattendPath -Encoding utf8
 Use-WindowsUnattend -Path 'C:\' -UnattendPath $AuditUnattendPath -Verbose
-
+#>
 #================================================
 #  [PostOS] AutopilotOOBE Configuration Staging
 #================================================
