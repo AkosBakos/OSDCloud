@@ -27,25 +27,23 @@ Start-OSDCloud @Params
 #================================================
 #   PostOS Audit Mode OOBEDeploy
 #================================================
+Write-Host -ForegroundColor Green "Create C:\Windows\Panther\Unattend.xml"
 $AuditUnattendXml = @'
 <?xml version='1.0' encoding='utf-8'?>
 <unattend xmlns="urn:schemas-microsoft-com:unattend">
     <settings pass="specialize" wasPassProcessed="true">
         <component name="Microsoft-Windows-Deployment" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <RunSynchronous>
-            
                 <RunSynchronousCommand wcm:action="add">
                     <Order>1</Order>
                     <Description>OSDCloud Specialize</Description>
                     <Path>Powershell -ExecutionPolicy Bypass -Command Invoke-OSDSpecialize -Verbose</Path>
                 </RunSynchronousCommand>
-                
                 <RunSynchronousCommand wcm:action="add">
                     <Order>2</Order>
                     <Description>Start Autopilot.CMD</Description>
-                    <Path>CMD /C START /WAIT C:\Windows\System32\Autopilot.cmd</Path>
+                    <Path>CMD /K START /WAIT C:\Windows\System32\Autopilot.cmd</Path>
                 </RunSynchronousCommand>
-            
             </RunSynchronous>
         </component>
     </settings>
