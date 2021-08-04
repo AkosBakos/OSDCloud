@@ -19,7 +19,7 @@ Import-Module OSD -Force
 $Params = @{
     OSBuild = "20H2"
     OSEdition = "Enterprise"
-    OSLanguage = "de-de"
+    OSLanguage = "en-us"
     ZTI = $true
 }
 Start-OSDCloud @Params
@@ -72,7 +72,7 @@ $AutopilotCMD | Out-File -FilePath 'C:\Windows\System32\Autopilot.cmd' -Encoding
 #================================================
 #  [PostOS] OOBEDeploy Configuration
 #================================================
-Write-Host -ForegroundColor Green "C:\ProgramData\OSDeploy\OSDeploy.OOBEDeploy.json"
+Write-Host -ForegroundColor Green "Create C:\ProgramData\OSDeploy\OSDeploy.OOBEDeploy.json"
 $OOBEDeployJson = @'
 {
     "Autopilot":  {
@@ -114,7 +114,7 @@ Start /Wait PowerShell -NoL -C Restart-Computer -Force
 $PostOOBECMD | Out-File -FilePath 'C:\Windows\System32\PostOOBE.cmd' -Encoding ascii -Force
 
 #=======================================================================
-#   PostOS: Restart-Computer
+#   Restart-Computer
 #=======================================================================
 Write-Host  -ForegroundColor Green "Restarting in 20 seconds!"
 Start-Sleep -Seconds 20
