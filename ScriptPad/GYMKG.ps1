@@ -23,7 +23,7 @@ $Params = @{
     ZTI = $true
 }
 Start-OSDCloud @Params
-<#
+
 #================================================
 #   PostOS Audit Mode OOBEDeploy
 #================================================
@@ -49,6 +49,8 @@ $AuditUnattendXml = @'
     </settings>
 </unattend>
 '@
+$AuditUnattendXml | Out-File -FilePath "C:\Windows\Panther\Unattend.xml" -Encoding utf8 -Force
+<#
 #================================================
 #   Set Unattend.xml
 #================================================
