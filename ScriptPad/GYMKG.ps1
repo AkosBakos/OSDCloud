@@ -54,7 +54,7 @@ $AuditUnattendXml = @'
 #================================================
 #   Set Unattend.xml
 #================================================
-$PantherUnattendPath = 'C:\Windows\Panther\Unattend'
+$PantherUnattendPath = 'C:\Windows\Panther'
 if (-NOT (Test-Path $PantherUnattendPath)) {
     New-Item -Path $PantherUnattendPath -ItemType Directory -Force | Out-Null
 }
