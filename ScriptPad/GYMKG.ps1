@@ -49,6 +49,7 @@ $AuditUnattendXml = @'
             </RunSynchronous>
         </component>
     </settings>
+</unattend>
 '@
 #================================================
 #   Set Unattend.xml
