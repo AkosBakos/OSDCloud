@@ -25,62 +25,33 @@ $Params = @{
 Start-OSDCloud @Params
 
 #================================================
-#   PostOS Audit Mode OOBEDeploy
+#  [PostOS] OOBEDeploy Configuration
 #================================================
-Write-Host -ForegroundColor Green "Create C:\Windows\Panther\Unattend.xml"
-$AuditUnattendXml = @'
-<?xml version='1.0' encoding='utf-8'?>
-<unattend xmlns="urn:schemas-microsoft-com:unattend">
-    <settings pass="specialize" wasPassProcessed="true">
-        <component name="Microsoft-Windows-Deployment" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-            <RunSynchronous>
-
-                <RunSynchronousCommand wcm:action="add">
-                    <Order>1</Order>
-                    <Description>OSDCloud Specialize</Description>
-                    <Path>Powershell -ExecutionPolicy Bypass -Command Invoke-OSDSpecialize -Verbose</Path>
-                </RunSynchronousCommand>
-
-                <RunSynchronousCommand wcm:action="add">
-                    <Order>2</Order>
-                    <Description>Setting PowerShell ExecutionPolicy</Description>
-                    <Path>PowerShell -WindowStyle Hidden -Command "Set-ExecutionPolicy RemoteSigned -Force"</Path>
-                </RunSynchronousCommand>
-
-                <RunSynchronousCommand wcm:action="add">
-                    <Order>3</Order>
-                    <Description>Update AutopilotOOBE Module</Description>
-                    <Path>PowerShell -Command "Install-Module AutopilotOOBE -Force"</Path>
-                </RunSynchronousCommand>
-
-                <RunSynchronousCommand wcm:action="add">
-                    <Order>4</Order>
-                    <Description>Start AutopilotOOBE</Description>
-                    <Path>PowerShell -Command Start-AutopilotOOBE</Path>
-                </RunSynchronousCommand>
-
-                <RunSynchronousCommand wcm:action="add">
-                    <Order>5</Order>
-                    <Description>Start OOBEDeploy</Description>
-                    <Path>PowerShell -Command Start-OOBEDeploy</Path>
-                </RunSynchronousCommand>
-
-            </RunSynchronous>
-        </component>
-    </settings>
-</unattend>
-'@
-
-#================================================
-#   Set Unattend.xml
-#================================================
-$PantherUnattendPath = 'C:\Windows\Panther'
-if (-NOT (Test-Path $PantherUnattendPath)) {
-    New-Item -Path $PantherUnattendPath -ItemType Directory -Force | Out-Null
+Write-Host -ForegroundColor Green "Create C:\ProgramData\OSDeploy\OSDeploy.OOBEDeploy.json"
+$OOBEDeployJson = @'
+{
+    "Autopilot":  {
+                      "IsPresent":  false
+                  },
+    "RemoveAppx":  [
+                       "CommunicationsApps",
+                       "OfficeHub",
+                       "People",
+                       "Skype",
+                       "Solitaire",
+                       "Xbox",
+                       "ZuneMusic",
+                       "ZuneVideo"
+                   ],
+    "UpdateDrivers":  {
+                          "IsPresent":  true
+                      },
+    "UpdateWindows":  {
+                          "IsPresent":  true
+                      }
 }
-$AuditUnattendPath = Join-Path $PantherUnattendPath 'Unattend.xml'
-$AuditUnattendXml | Out-File -FilePath $AuditUnattendPath -Encoding utf8
-Use-WindowsUnattend -Path 'C:\' -UnattendPath $AuditUnattendPath -Verbose
+'@
+$OOBEDeployJson | Out-File -FilePath "C:\ProgramData\OSDeploy\OSDeploy.OOBEDeploy.json" -Encoding ascii -Force
 
 #================================================
 #  [PostOS] AutopilotOOBE Configuration Staging
@@ -128,50 +99,6 @@ Start /Wait PowerShell -NoL -C Start-OOBEDeploy
 Start /Wait PowerShell -NoL -C Restart-Computer -Force
 '@
 $AutopilotCMD | Out-File -FilePath 'C:\Windows\System32\Autopilot.cmd' -Encoding ascii -Force
-
-#================================================
-#  [PostOS] OOBEDeploy Configuration
-#================================================
-Write-Host -ForegroundColor Green "Create C:\ProgramData\OSDeploy\OSDeploy.OOBEDeploy.json"
-$OOBEDeployJson = @'
-{
-    "Autopilot":  {
-                      "IsPresent":  false
-                  },
-    "RemoveAppx":  [
-                       "CommunicationsApps",
-                       "OfficeHub",
-                       "People",
-                       "Skype",
-                       "Solitaire",
-                       "Xbox",
-                       "ZuneMusic",
-                       "ZuneVideo"
-                   ],
-    "UpdateDrivers":  {
-                          "IsPresent":  true
-                      },
-    "UpdateWindows":  {
-                          "IsPresent":  true
-                      }
-}
-'@
-$OOBEDeployJson | Out-File -FilePath "C:\ProgramData\OSDeploy\OSDeploy.OOBEDeploy.json" -Encoding ascii -Force
-
-#================================================
-#  [PostOS] OOBEDeploy CMD Command Line
-#================================================
-Write-Host -ForegroundColor Green "Create C:\Windows\System32\PostOOBE.cmd"
-$PostOOBECMD = @'
-PowerShell -NoL -Com Set-ExecutionPolicy RemoteSigned -Force
-Set Path = %PATH%;C:\Program Files\WindowsPowerShell\Scripts
-Start PowerShell -NoL -W Mi
-Start /Wait PowerShell -NoL -C Install-Module AutopilotOOBE -Force -Verbose
-Start /Wait PowerShell -NoL -C Start-OOBEDeploy
-Start /Wait PowerShell -NoL -C Restart-Computer -Force
-'@
-
-$PostOOBECMD | Out-File -FilePath 'C:\Windows\System32\PostOOBE.cmd' -Encoding ascii -Force
 
 #=======================================================================
 #   Restart-Computer
