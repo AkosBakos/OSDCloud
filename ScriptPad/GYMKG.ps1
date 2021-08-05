@@ -34,23 +34,43 @@ $AuditUnattendXml = @'
     <settings pass="specialize" wasPassProcessed="true">
         <component name="Microsoft-Windows-Deployment" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <RunSynchronous>
+
                 <RunSynchronousCommand wcm:action="add">
                     <Order>1</Order>
                     <Description>OSDCloud Specialize</Description>
                     <Path>Powershell -ExecutionPolicy Bypass -Command Invoke-OSDSpecialize -Verbose</Path>
                 </RunSynchronousCommand>
+
                 <RunSynchronousCommand wcm:action="add">
                     <Order>2</Order>
-                    <Description>Start Autopilot.CMD</Description>
-                    <Path>CMD /K START /WAIT C:\Windows\System32\Autopilot.cmd</Path>
+                    <Description>Setting PowerShell ExecutionPolicy</Description>
+                    <Path>PowerShell -WindowStyle Hidden -Command "Set-ExecutionPolicy RemoteSigned -Force"</Path>
                 </RunSynchronousCommand>
+
+                <RunSynchronousCommand wcm:action="add">
+                    <Order>3</Order>
+                    <Description>Update AutopilotOOBE Module</Description>
+                    <Path>PowerShell -Command "Install-Module AutopilotOOBE -Force"</Path>
+                </RunSynchronousCommand>
+
+                <RunSynchronousCommand wcm:action="add">
+                    <Order>4</Order>
+                    <Description>Start AutopilotOOBE</Description>
+                    <Path>PowerShell -Command Start-AutopilotOOBE</Path>
+                </RunSynchronousCommand>
+
+                <RunSynchronousCommand wcm:action="add">
+                    <Order>5</Order>
+                    <Description>Start OOBEDeploy</Description>
+                    <Path>PowerShell -Command Start-OOBEDeploy</Path>
+                </RunSynchronousCommand>
+
             </RunSynchronous>
         </component>
     </settings>
 </unattend>
 '@
-$AuditUnattendXml | Out-File -FilePath "C:\Windows\Panther\Unattend.xml" -Encoding utf8 -Force
-<#
+
 #================================================
 #   Set Unattend.xml
 #================================================
@@ -61,7 +81,7 @@ if (-NOT (Test-Path $PantherUnattendPath)) {
 $AuditUnattendPath = Join-Path $PantherUnattendPath 'Invoke-OSDSpecialize.xml'
 $AuditUnattendXml | Out-File -FilePath $AuditUnattendPath -Encoding utf8
 Use-WindowsUnattend -Path 'C:\' -UnattendPath $AuditUnattendPath -Verbose
-#>
+
 #================================================
 #  [PostOS] AutopilotOOBE Configuration Staging
 #================================================
