@@ -1,3 +1,4 @@
+Write-Host -ForegroundColor Green "Set keyboard language for de-CH"
 $LanguageList = Get-WinUserLanguageList
 $LanguageList.Add("de-CH")
 Set-WinUserLanguageList $LanguageList -Force
