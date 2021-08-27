@@ -15,5 +15,5 @@ Write-Host  -ForegroundColor Green "Importing OSD PowerShell Module"
 Import-Module OSD -Force
 
 #Start OSDCloudScriptPad
-Write-Host -ForegroundColor Green "Start OSDCloudScriptPad"
-Start-ScriptPad -GitOwner AkosBakos -GitRepo OSDCloud -GitPath ScriptPad
+Write-Host -ForegroundColor Green "Start OSDPad"
+Start-OSDPad -RepoOwner AkosBakos -RepoName OSDCloud -RepoFolder ScriptPad -BrandingTitle 'Ákos OSD Cloud Deployment'
