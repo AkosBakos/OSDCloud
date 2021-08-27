@@ -1,4 +1,4 @@
-Start-Transcript -Path %TEMP%\Set-KeyboardLanguage.txt
+Start-Transcript -Path C:\Windows\Temp\Set-KeyboardLanguage.txt
 Write-Host -ForegroundColor Green "Set keyboard language for de-CH"
 
 $LanguageList = Get-WinUserLanguageList
