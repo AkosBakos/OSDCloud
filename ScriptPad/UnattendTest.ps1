@@ -131,7 +131,7 @@ $PantherUnattendPath = 'C:\Windows\Panther\'
 if (-NOT (Test-Path $PantherUnattendPath)) {
     New-Item -Path $PantherUnattendPath -ItemType Directory -Force | Out-Null
 }
-$AuditUnattendPath = Join-Path $PantherUnattendPath 'Unattend.xml'
+$AuditUnattendPath = Join-Path $PantherUnattendPath 'Invoke-OSDSpecialize.xml'
 
 Write-Host -ForegroundColor Cyan "Set Unattend.xml at $AuditUnattendPath"
 $UnattendXml | Out-File -FilePath $AuditUnattendPath -Encoding utf8
