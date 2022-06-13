@@ -135,7 +135,7 @@ $UnattendXml = @'
             <RunSynchronous>
                 <RunSynchronousCommand wcm:action="add">
                 <Order>1</Order>
-                <Description>Save Get-WindowsAutopilotInfo</Description>
+                <Description>Start custom Autopilot script</Description>
                 <Path>CMD /C C:\Windows\System32\Autopilot.cmd</Path>
                 </RunSynchronousCommand>
             </RunSynchronous>
