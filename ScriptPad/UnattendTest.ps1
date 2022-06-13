@@ -154,13 +154,13 @@ $UnattendXml = @'
                 <RunSynchronousCommand wcm:action="add">
                     <Order>2</Order>
                     <Description>Install AutopilotOOBE module</Description>
-                    <Path>Start /Wait PowerShell -NoL -C Install-Module AutopilotOOBE -Force -Verbose</Path>
+                    <Path>PowerShell -WindowStyle Hidden -Command "Install-Module AutopilotOOBE -Force -Verbose"</Path>
                 </RunSynchronousCommand>
 
                 <RunSynchronousCommand wcm:action="add">
                     <Order>3</Order>
                     <Description>Start-AutopilotOOBE Command</Description>
-                    <Path>Start /Wait PowerShell -NoL -C Start-AutopilotOOBE</Path>
+                    <Path>PowerShell -WindowStyle Hidden -Command "Start-AutopilotOOBE"</Path>
                 </RunSynchronousCommand>
 
                 <RunSynchronousCommand wcm:action="add">
