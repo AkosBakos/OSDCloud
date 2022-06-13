@@ -120,6 +120,18 @@ $UnattendXml = @'
                     <Description>OSDCloud Specialize</Description>
                     <Path>Powershell -ExecutionPolicy Bypass -Command Invoke-OSDSpecialize -Verbose</Path>
                 </RunSynchronousCommand>
+
+                <RunSynchronousCommand wcm:action="add">
+                    <Order>2</Order>
+                    <Description>OSDCloud Specialize</Description>
+                    <Path>Powershell -ExecutionPolicy Bypass -Command Invoke-OSDSpecialize -Verbose</Path>
+                </RunSynchronousCommand>
+
+                <RunSynchronousCommand wcm:action="add">
+                    <Order>3</Order>
+                    <Description>OSDCloud Specialize</Description>
+                    <Path>Powershell -ExecutionPolicy Bypass -Command Invoke-OSDSpecialize -Verbose</Path>
+                </RunSynchronousCommand>
             </RunSynchronous>
         </component>
     </settings>
@@ -130,7 +142,7 @@ $UnattendXml = @'
             </Reseal>
         </component>
     </settings>
-    <settings pass="auditSystem">
+    <settings pass="auditUser">
         <component name="Microsoft-Windows-Deployment" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <RunSynchronous>
                 <RunSynchronousCommand wcm:action="add">
@@ -141,14 +153,14 @@ $UnattendXml = @'
 
                 <RunSynchronousCommand wcm:action="add">
                     <Order>2</Order>
-                    <Description>WaitWebConnection</Description>
-                    <Path>PowerShell -Command "Wait-WebConnection powershellgallery.com -Verbose"</Path>
+                    <Description>Install AutopilotOOBE module</Description>
+                    <Path>Start /Wait PowerShell -NoL -C Install-Module AutopilotOOBE -Force -Verbose</Path>
                 </RunSynchronousCommand>
 
                 <RunSynchronousCommand wcm:action="add">
                     <Order>3</Order>
-                    <Description>Save Get-WindowsAutopilotInfo</Description>
-                    <Path>PowerShell -Command "Install-Script -Name Get-WindowsAutopilotInfo -Verbose -Force"</Path>
+                    <Description>Start-AutopilotOOBE Command</Description>
+                    <Path>Start /Wait PowerShell -NoL -C Start-AutopilotOOBE</Path>
                 </RunSynchronousCommand>
 
                 <RunSynchronousCommand wcm:action="add">
@@ -191,7 +203,7 @@ REM Start /Wait PowerShell -NoL -C Install-Module AutopilotOOBE -Force -Verbose
 Start /Wait PowerShell -NoL -C Install-Module OSD -Force -Verbose
 Start /Wait PowerShell -NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/AkosBakos/OSDCloud/main/Set-KeyboardLanguage.ps1
 Start /Wait PowerShell -NoL -C Start-OOBEDeploy
-Start /Wait PowerShell -NoL -C Restart-Computer -Force
+REM Start /Wait PowerShell -NoL -C Restart-Computer -Force
 '@
 $AutopilotCMD | Out-File -FilePath 'C:\Windows\System32\Autopilot.cmd' -Encoding ascii -Force
 
