@@ -36,30 +36,33 @@ $OOBEDeployJson = @'
                       "IsPresent":  false
                   },
     "RemoveAppx":  [
-                       "Microsoft.549981C3F5F10",
-                        "Microsoft.BingWeather",
-                        "Microsoft.GetHelp",
-                        "Microsoft.Getstarted",
-                        "Microsoft.Microsoft3DViewer",
-                        "Microsoft.MicrosoftOfficeHub",
-                        "Microsoft.MicrosoftSolitaireCollection",
-                        "Microsoft.MixedReality.Portal",
-                        "Microsoft.People",
-                        "Microsoft.SkypeApp",
-                        "Microsoft.Wallet",
-                        "Microsoft.WindowsCamera",
-                        "microsoft.windowscommunicationsapps",
-                        "Microsoft.WindowsFeedbackHub",
-                        "Microsoft.WindowsMaps",
-                        "Microsoft.Xbox.TCUI",
-                        "Microsoft.XboxApp",
-                        "Microsoft.XboxGameOverlay",
-                        "Microsoft.XboxGamingOverlay",
-                        "Microsoft.XboxIdentityProvider",
-                        "Microsoft.XboxSpeechToTextOverlay",
-                        "Microsoft.YourPhone",
-                        "Microsoft.ZuneMusic",
-                        "Microsoft.ZuneVideo"
+                    "MicrosoftTeams"
+                    "Microsoft.BingWeather"
+                    "Microsoft.BingNews"
+                    "Microsoft.GamingApp"
+                    "Microsoft.GetHelp"
+                    "Microsoft.Getstarted"
+                    "Microsoft.Messaging"
+                    "Microsoft.MicrosoftOfficeHub"
+                    "Microsoft.MicrosoftSolitaireCollection"
+                    "Microsoft.MicrosoftStickyNotes"
+                    "Microsoft.MSPaint"
+                    "Microsoft.People"
+                    "Microsoft.PowerAutomateDesktop"
+                    "Microsoft.StorePurchaseApp"
+                    "Microsoft.Todos"
+                    "microsoft.windowscommunicationsapps"
+                    "Microsoft.WindowsFeedbackHub"
+                    "Microsoft.WindowsMaps"
+                    "Microsoft.WindowsSoundRecorder"
+                    "Microsoft.Xbox.TCUI"
+                    "Microsoft.XboxGameOverlay"
+                    "Microsoft.XboxGamingOverlay"
+                    "Microsoft.XboxIdentityProvider"
+                    "Microsoft.XboxSpeechToTextOverlay"
+                    "Microsoft.YourPhone"
+                    "Microsoft.ZuneMusic"
+                    "Microsoft.ZuneVideo"
                    ],
     "UpdateDrivers":  {
                           "IsPresent":  true
@@ -77,20 +80,24 @@ $OOBEDeployJson | Out-File -FilePath "C:\ProgramData\OSDeploy\OSDeploy.OOBEDeplo
 #================================================
 #  [PostOS] AutopilotOOBE Configuration Staging
 #================================================
+Write-Host -ForegroundColor Green "Define Computername:"
+$Serial = Get-WmiObject Win32_bios | Select-Object -ExpandProperty SerialNumber
+$TargetComputername = $Serial.Substring(4,3)
+
+$AssignedComputerName = "BISAP$TargetComputername"
+Write-Host -ForegroundColor Red $AssignedComputerName
+Write-Host ""
+
 Write-Host -ForegroundColor Green "Create C:\ProgramData\OSDeploy\OSDeploy.AutopilotOOBE.json"
 $AutopilotOOBEJson = @'
 {
+    "AddToGroup":  "Int_all_Autopilot_devices",
     "Assign":  {
                    "IsPresent":  true
                },
-    "GroupTag":  "Mittelschulen",
-    "AddToGroup": "sg-GYMKG",
-    "AddToGroupOptions":  [
-                    "sg-GYMKG",
-                    "sg-GYMWM"
-    ],
+    "GroupTag":  "Autopilot-Computers",
     "Hidden":  [
-                   "AssignedComputerName",
+                   "AddToGroup",
                    "AssignedUser",
                    "PostAction",
                    "GroupTag",
@@ -99,9 +106,10 @@ $AutopilotOOBEJson = @'
     "PostAction":  "Quit",
     "Run":  "NetworkingWireless",
     "Docs":  "https://google.com/",
-    "Title":  "EDUBS PoC Autopilot Register"
-}
+    "Title":  "Autopilot Manual Register",
 '@
+$AutopilotOOBEJson += '"AssignedComputerName" : "' + $AssignedComputerName + '"}'
+
 If (!(Test-Path "C:\ProgramData\OSDeploy")) {
     New-Item "C:\ProgramData\OSDeploy" -ItemType Directory -Force | Out-Null
 }
@@ -116,7 +124,8 @@ PowerShell -NoL -Com Set-ExecutionPolicy RemoteSigned -Force
 Set Path = %PATH%;C:\Program Files\WindowsPowerShell\Scripts
 Start /Wait PowerShell -NoL -C Install-Module AutopilotOOBE -Force -Verbose
 Start /Wait PowerShell -NoL -C Install-Module OSD -Force -Verbose
-Start /Wait PowerShell -NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/DIGIT-BS/OSDCloud/main/Set-KeyboardLanguage.ps1
+Start /Wait PowerShell -NoL -C Invoke-WebPSScript https://setkeyboard.complianceag.osdcloud.ch
+Start /Wait PowerShell -NoL -C Invoke-WebPSScript https://productkey.complianceag.osdcloud.ch
 Start /Wait PowerShell -NoL -C Start-AutopilotOOBE
 Start /Wait PowerShell -NoL -C Start-OOBEDeploy
 Start /Wait PowerShell -NoL -C Restart-Computer -Force
@@ -129,7 +138,11 @@ $AutopilotCMD | Out-File -FilePath 'C:\Windows\System32\Autopilot.cmd' -Encoding
 Write-Host -ForegroundColor Green "Create C:\Windows\Setup\Scripts\SetupComplete.cmd"
 $SetupCompleteCMD = @'
 RD C:\OSDCloud\OS /S /Q
+XCOPY C:\OSDCloud\ C:\Windows\Logs\OSD /E /H /C /I /Y
+XCOPY C:\ProgramData\OSDeploy C:\Windows\Logs\OSD /E /H /C /I /Y
+RD C:\OSDCloud /S /Q
 RD C:\Drivers /S /Q
+RD C:\Temp /S /Q
 '@
 $SetupCompleteCMD | Out-File -FilePath 'C:\Windows\Setup\Scripts\SetupComplete.cmd' -Encoding ascii -Force
 
