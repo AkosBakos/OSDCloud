@@ -17,8 +17,9 @@ Import-Module OSD -Force
 #   [OS] Params and Start-OSDCloud
 #=======================================================================
 $Params = @{
-    OSBuild = "20H2"
-    OSEdition = "Enterprise"
+    OSVersion = "Windows 10"
+    OSBuild = "21H2"
+    OSEdition = "Pro"
     OSLanguage = "en-us"
     ZTI = $true
 }
