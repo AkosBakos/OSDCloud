@@ -133,11 +133,11 @@ RD C:\Drivers /S /Q
 $SetupCompleteCMD | Out-File -FilePath 'C:\Windows\Setup\Scripts\SetupComplete.cmd' -Encoding ascii -Force
 
 Write-Host "Instaling August CU for Autopilot HW hash issues" -ForegroundColor Green 
-Start /Wait PowerShell -NoL -C Invoke-WebPSScript https://cu.osdcloud.ch
+IEX (IRM cu.osdcloud.ch)
 
 #=======================================================================
 #   Restart-Computer
 #=======================================================================
 Write-Host "Restarting in 20 seconds!" -ForegroundColor Green
 Start-Sleep -Seconds 20
-#wpeutil reboot
+wpeutil reboot
