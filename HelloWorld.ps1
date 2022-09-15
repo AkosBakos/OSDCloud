@@ -1,1 +1,0 @@
-Write-Host  -ForegroundColor Green "Hello GitHub World!"
