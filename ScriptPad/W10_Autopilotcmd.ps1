@@ -82,11 +82,11 @@ $AutopilotOOBEJson = @'
     "Assign":  {
                    "IsPresent":  true
                },
-    "GroupTag":  "Mittelschulen",
-    "AddToGroup": "sg-GYMKG",
+    "GroupTag":  "GroupTagXXX",
+    "AddToGroup": "AADGroupX",
     "AddToGroupOptions":  [
-                    "sg-GYMKG",
-                    "sg-GYMWM"
+                    "AADGroupX",
+                    "AADroupY"
     ],
     "Hidden":  [
                    "AssignedComputerName",
@@ -98,7 +98,7 @@ $AutopilotOOBEJson = @'
     "PostAction":  "Quit",
     "Run":  "NetworkingWireless",
     "Docs":  "https://google.com/",
-    "Title":  "EDUBS PoC Autopilot Register"
+    "Title":  "AkosCloud Autopilot Register"
 }
 '@
 If (!(Test-Path "C:\ProgramData\OSDeploy")) {

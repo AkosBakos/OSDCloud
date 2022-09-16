@@ -84,18 +84,18 @@ Write-Host -ForegroundColor Green "Define Computername:"
 $Serial = Get-WmiObject Win32_bios | Select-Object -ExpandProperty SerialNumber
 $TargetComputername = $Serial.Substring(4,4)
 
-$AssignedComputerName = "ZG-NB-$TargetComputername"
+$AssignedComputerName = "AkosCloud-$TargetComputername"
 Write-Host -ForegroundColor Red $AssignedComputerName
 Write-Host ""
 
 Write-Host -ForegroundColor Green "Create C:\ProgramData\OSDeploy\OSDeploy.AutopilotOOBE.json"
 $AutopilotOOBEJson = @'
 {
-    "AddToGroup":  "G_ORG_Autopilot_Devices",
+    "AddToGroup":  "AADGroup",
     "Assign":  {
                    "IsPresent":  true
                },
-    "GroupTag":  "Autopilot-ZG",
+    "GroupTag":  "GroupTagXXX",
     "Hidden":  [
                    "AddToGroup",
                    "AssignedUser",
@@ -106,7 +106,7 @@ $AutopilotOOBEJson = @'
     "PostAction":  "Quit",
     "Run":  "NetworkingWireless",
     "Docs":  "https://google.com/",
-    "Title":  "Autopilot Manual Register",
+    "Title":  "AkosCloud Autopilot Register",
 '@
 $AutopilotOOBEJson += '"AssignedComputerName" : "' + $AssignedComputerName + '"}'
 
