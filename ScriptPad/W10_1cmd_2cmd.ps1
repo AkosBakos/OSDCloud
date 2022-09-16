@@ -149,6 +149,7 @@ $AutopilotCMD | Out-File -FilePath 'C:\Windows\System32\2.cmd' -Encoding ascii -
 #================================================
 Write-Host -ForegroundColor Green "Create C:\Windows\Setup\Scripts\SetupComplete.cmd"
 $SetupCompleteCMD = @'
+RD C:\OSDCloud\OS /S /Q
 XCOPY C:\OSDCloud\ C:\ProgramData\Microsoft\IntuneManagementExtension\Logs\OSD /E /H /C /I /Y
 XCOPY C:\ProgramData\OSDeploy C:\ProgramData\Microsoft\IntuneManagementExtension\Logs\OSD /E /H /C /I /Y
 RD C:\OSDCloud /S /Q
@@ -190,7 +191,7 @@ $UnattendXml = @'
                 <RunSynchronousCommand wcm:action="add">
                     <Order>2</Order>
                     <Description>OSDCloud Specialize</Description>
-                    <Path>CMD /C "C:\Windows\SysWOW64\DISM.exe /Online /Add-Package /PackagePath:C:\OSDCloud\CU\windows10.0-kb5016616-x64.cab /LogPath:C:\OSDCloud\CU\DISM_CU.log /NoRestart"</Path>
+                    <Path>CMD /C "C:\Windows\SysWOW64\DISM.exe /Online /Add-Package /PackagePath:C:\OSDCloud\CU\windows10.0-kb5016616-x64.cab /LogPath:C:\OSDCloud\CU\DISM_CU_08_W11.log /NoRestart"</Path>
                 </RunSynchronousCommand>
             </RunSynchronous>
         </component>

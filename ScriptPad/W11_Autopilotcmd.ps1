@@ -140,6 +140,7 @@ $AutopilotCMD | Out-File -FilePath 'C:\Windows\System32\Autopilot.cmd' -Encoding
 #================================================
 Write-Host -ForegroundColor Green "Create C:\Windows\Setup\Scripts\SetupComplete.cmd"
 $SetupCompleteCMD = @'
+RD C:\OSDCloud\OS /S /Q
 XCOPY C:\OSDCloud\ C:\ProgramData\Microsoft\IntuneManagementExtension\Logs\OSD /E /H /C /I /Y
 XCOPY C:\ProgramData\OSDeploy C:\ProgramData\Microsoft\IntuneManagementExtension\Logs\OSD /E /H /C /I /Y
 RD C:\OSDCloud /S /Q
@@ -154,14 +155,14 @@ If (!(Test-Path -Path "C:\OSDCloud\CU")) {
     New-Item -Path "C:\OSDCloud\CU" -ItemType Directory
 }
 
-$SourceUrl = "https://catalog.s.download.windowsupdate.com/c/msdownload/update/software/secu/2022/08/windows10.0-kb5016616-x64_94a65010a34b5bae2324c9433d1cae0b9d906d8c.msu"
+$SourceUrl = "https://catalog.s.download.windowsupdate.com/d/msdownload/update/software/secu/2022/08/windows10.0-kb5016629-x64_5c835cd538774e6191bb98343231c095c7918a72.msu"
 Write-Host "cURL Source: $SourceUrl" -Foreground Green
 
-$DestinationFullName = "C:\OSDCloud\CU\windows10.0-kb5016616-x64_94a65010a34b5bae2324c9433d1cae0b9d906d8c.msu"
+$DestinationFullName = "C:\OSDCloud\CU\windows10.0-kb5016629-x64_5c835cd538774e6191bb98343231c095c7918a72.msu"
 Write-Host "Destination: $DestinationFullName" -Foreground Green
 
 Invoke-Expression "& curl.exe --insecure --location --output `"$DestinationFullName`" --url `"$SourceUrl`""
-expand -f:* "C:\OSDCloud\CU\windows10.0-kb5016616-x64_94a65010a34b5bae2324c9433d1cae0b9d906d8c.msu" C:\OSDCloud\CU\
+expand -f:* "C:\OSDCloud\CU\windows10.0-kb5016629-x64_5c835cd538774e6191bb98343231c095c7918a72.msu" C:\OSDCloud\CU\
 
 Write-Host "Set registry keys to force a reboot" -Foreground Green
 Set-ItemProperty -Path "HKLM:\System\Setup" -Name "SetupShutdownRequired" -Value 1 -Type DWORD
@@ -181,7 +182,7 @@ $UnattendXml = @'
                 <RunSynchronousCommand wcm:action="add">
                     <Order>2</Order>
                     <Description>OSDCloud Specialize</Description>
-                    <Path>CMD /C "C:\Windows\SysWOW64\DISM.exe /Online /Add-Package /PackagePath:C:\OSDCloud\CU\windows10.0-kb5016616-x64.cab /LogPath:C:\OSDCloud\CU\DISM_CU.log /NoRestart"</Path>
+                    <Path>CMD /C "C:\Windows\SysWOW64\DISM.exe /Online /Add-Package /PackagePath:C:\OSDCloud\CU\windows10.0-kb5016629-x64.cab /LogPath:C:\OSDCloud\CU\DISM_CU_08_W11.log /NoRestart"</Path>
                 </RunSynchronousCommand>
             </RunSynchronous>
         </component>
