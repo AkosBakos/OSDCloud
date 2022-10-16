@@ -20,6 +20,7 @@ $Params = @{
     OSBuild = "21H2"
     OSEdition = "Pro"
     OSLanguage = "en-us"
+    OSLicense = "Retail"
     ZTI = $true
     Firmware = $true
 }
