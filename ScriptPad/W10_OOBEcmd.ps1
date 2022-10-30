@@ -138,11 +138,11 @@ $SetupCompleteCMD | Out-File -FilePath 'C:\Windows\Setup\Scripts\SetupComplete.c
 #  [PostOS] Installing August CU for Autopilot HW hash issues
 #================================================
 If ($Params.OSVersion -eq "Windows 10" -and $Params.OSBuild -eq "21H2") {
-    Write-Host -ForegroundColor Cyan "Installing August CU for Autopilot HW hash issues"
+    Write-Host -ForegroundColor Cyan "Installing CU for Autopilot HW hash issues"
     Invoke-Expression (Invoke-RestMethod https://cu.osdcloud.ch)
 
     Write-Host -ForegroundColor Gray "Download August CU PPKG from Azure Blob Storage"
-    Invoke-Expression "& curl.exe --insecure --location --output 'C:\OSDCloud\Packages\Install_CU.ppkg' --url 'https://azosdclouddev.blob.core.windows.net/packages/Install_August_CU.ppkg?sp=r&st=2022-10-14T15:57:43Z&se=2023-10-14T23:57:43Z&sv=2021-06-08&sr=b&sig=l4Ycg7lTb1ij0DzbA%2FUNlvO7OLEtvYZARr2hNjqOJes%3D'"
+    Invoke-Expression "& curl.exe --insecure --location --output 'C:\OSDCloud\Packages\Install_CU.ppkg' --url 'https://XXXX.blob.core.windows.net/packages/Install_CU.ppkg'"
     
     Write-Host -ForegroundColor Gray "Importing August CU as PPKG"
     DISM.exe /Image:C:\ /Add-ProvisioningPackage /PackagePath:C:\OSDCloud\Packages\Install_CU.ppkg
