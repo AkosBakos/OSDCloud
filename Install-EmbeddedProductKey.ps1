@@ -1,7 +1,7 @@
-[CmdletBinding()]
-Param ()
+$Global:Transcript = "$((Get-Date).ToString('yyyy-MM-dd-HHmmss'))-Install-EmbeddedProductKey.log"
+Start-Transcript -Path (Join-Path "$env:ProgramData\Microsoft\IntuneManagementExtension\Logs\OSD\" $Global:Transcript) -ErrorAction Ignore
 
-# // Get embedded product key
+Write-Host -ForegroundColor Green "Get embedded product key"
 $Key = (Get-WmiObject SoftwareLicensingService).OA3xOriginalProductKey
 
 If ($Key) {
@@ -17,3 +17,5 @@ If ($Key) {
 Else {
     Write-Host -ForegroundColor Red 'No embedded product key found.'
 }
+
+Stop-Transcript

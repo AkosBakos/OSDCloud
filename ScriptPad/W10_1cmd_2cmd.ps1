@@ -119,7 +119,7 @@ $AutopilotOOBEJson | Out-File -FilePath "C:\ProgramData\OSDeploy\OSDeploy.Autopi
 #  [PostOS] OOBEDeploy CMD Command Line - 1.cmd
 #================================================
 Write-Host -ForegroundColor Green "Create C:\Windows\System32\1.cmd"
-$AutopilotCMD = @'
+$OOBECMD = @'
 PowerShell -NoL -Com Set-ExecutionPolicy RemoteSigned -Force
 Set Path = %PATH%;C:\Program Files\WindowsPowerShell\Scripts
 Start /Wait PowerShell -NoL -C Install-Module OSD -Force -Verbose
@@ -128,13 +128,13 @@ Start /Wait PowerShell -NoL -C Invoke-WebPSScript https://productkey.compliancea
 Start /Wait PowerShell -NoL -C Start-OOBEDeploy
 Start /Wait PowerShell -NoL -C Restart-Computer -Force
 '@
-$AutopilotCMD | Out-File -FilePath 'C:\Windows\System32\1.cmd' -Encoding ascii -Force
+$OOBECMD | Out-File -FilePath 'C:\Windows\System32\1.cmd' -Encoding ascii -Force
 
 #================================================
 #  [PostOS] AutopilotOOBE CMD Command Line - 2.cmd
 #================================================
 Write-Host -ForegroundColor Green "Create C:\Windows\System32\2.cmd"
-$AutopilotCMD = @'
+$OOBECMD = @'
 PowerShell -NoL -Com Set-ExecutionPolicy RemoteSigned -Force
 Set Path = %PATH%;C:\Program Files\WindowsPowerShell\Scripts
 Start /Wait PowerShell -NoL -C Install-Module AutopilotOOBE -Force -Verbose
@@ -142,7 +142,7 @@ Start /Wait PowerShell -NoL -C Start-AutopilotOOBE
 Start /Wait PowerShell -NoL -C Invoke-WebPSScript https://tpm.osdcloud.ch
 Start /Wait PowerShell -NoL -C Restart-Computer -Force
 '@
-$AutopilotCMD | Out-File -FilePath 'C:\Windows\System32\2.cmd' -Encoding ascii -Force
+$OOBECMD | Out-File -FilePath 'C:\Windows\System32\2.cmd' -Encoding ascii -Force
 
 #================================================
 #  [PostOS] SetupComplete CMD Command Line
