@@ -33,7 +33,7 @@ function Step-KeyboardLanguage {
     $LanguageList = Get-WinUserLanguageList
     
     $LanguageList.Add("de-CH")
-    Set-WinUserLanguageList $LanguageList -Force
+    Set-WinUserLanguageList $LanguageList -Force | Out-Null
     
     Start-Sleep -Seconds 5
     
