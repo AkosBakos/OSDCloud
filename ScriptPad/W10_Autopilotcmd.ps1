@@ -115,8 +115,8 @@ PowerShell -NoL -Com Set-ExecutionPolicy RemoteSigned -Force
 Set Path = %PATH%;C:\Program Files\WindowsPowerShell\Scripts
 Start /Wait PowerShell -NoL -C Install-Module AutopilotOOBE -Force -Verbose
 Start /Wait PowerShell -NoL -C Install-Module OSD -Force -Verbose
-Start /Wait PowerShell -NoL -C Invoke-WebPSScript https://setkeyboard.complianceag.osdcloud.ch
-Start /Wait PowerShell -NoL -C Invoke-WebPSScript https://productkey.complianceag.osdcloud.ch
+Start /Wait PowerShell -NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/AkosBakos/OSDCloud/main/Set-KeyboardLanguage.ps1
+Start /Wait PowerShell -NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/AkosBakos/OSDCloud/main/Install-EmbeddedProductKey.ps1
 Start /Wait PowerShell -NoL -C Invoke-WebPSScript https://check-autopilotprereq.osdcloud.ch
 Start /Wait PowerShell -NoL -C Invoke-WebPSScript https://start-autopilotoobe.osdcloud.ch
 Start /Wait PowerShell -NoL -C Start-OOBEDeploy
@@ -131,64 +131,22 @@ $OOBECMD | Out-File -FilePath 'C:\Windows\System32\OOBE.cmd' -Encoding ascii -Fo
 #================================================
 Write-Host -ForegroundColor Green "Create C:\Windows\Setup\Scripts\SetupComplete.cmd"
 $SetupCompleteCMD = @'
-RD C:\OSDCloud\OS /S /Q
-XCOPY C:\OSDCloud\ C:\ProgramData\Microsoft\IntuneManagementExtension\Logs\OSD /E /H /C /I /Y
-XCOPY C:\ProgramData\OSDeploy C:\ProgramData\Microsoft\IntuneManagementExtension\Logs\OSD /E /H /C /I /Y
-RD C:\OSDCloud /S /Q
-RD C:\Drivers /S /Q
-RD C:\Temp /S /Q
 '@
 $SetupCompleteCMD | Out-File -FilePath 'C:\Windows\Setup\Scripts\SetupComplete.cmd' -Encoding ascii -Force
 
-Write-Host ""
-Write-Host "Installing August CU for Autopilot HW hash issues" -ForegroundColor Green 
-If (!(Test-Path -Path "C:\OSDCloud\CU")) {
-    New-Item -Path "C:\OSDCloud\CU" -ItemType Directory
+#================================================
+#  [PostOS] Installing August CU for Autopilot HW hash issues
+#================================================
+If ($Params.OSVersion -eq "Windows 10" -and $Params.OSBuild -eq "21H2") {
+    Write-Host -ForegroundColor Cyan "Installing August CU for Autopilot HW hash issues"
+    Invoke-Expression (Invoke-RestMethod https://cu.osdcloud.ch)
+
+    Write-Host -ForegroundColor Gray "Download August CU PPKG from Azure Blob Storage"
+    Invoke-Expression "& curl.exe --insecure --location --output 'C:\OSDCloud\Packages\Install_CU.ppkg' --url 'https://azosdclouddev.blob.core.windows.net/packages/Install_August_CU.ppkg?sp=r&st=2022-10-14T15:57:43Z&se=2023-10-14T23:57:43Z&sv=2021-06-08&sr=b&sig=l4Ycg7lTb1ij0DzbA%2FUNlvO7OLEtvYZARr2hNjqOJes%3D'"
+    
+    Write-Host -ForegroundColor Gray "Importing August CU as PPKG"
+    DISM.exe /Image:C:\ /Add-ProvisioningPackage /PackagePath:C:\OSDCloud\Packages\Install_CU.ppkg
 }
-
-$SourceUrl = "https://catalog.s.download.windowsupdate.com/c/msdownload/update/software/secu/2022/08/windows10.0-kb5016616-x64_94a65010a34b5bae2324c9433d1cae0b9d906d8c.msu"
-Write-Host "cURL Source: $SourceUrl" -Foreground Green
-
-$DestinationFullName = "C:\OSDCloud\CU\windows10.0-kb5016616-x64_94a65010a34b5bae2324c9433d1cae0b9d906d8c.msu"
-Write-Host "Destination: $DestinationFullName" -Foreground Green
-
-Invoke-Expression "& curl.exe --insecure --location --output `"$DestinationFullName`" --url `"$SourceUrl`""
-expand -f:* "C:\OSDCloud\CU\windows10.0-kb5016616-x64_94a65010a34b5bae2324c9433d1cae0b9d906d8c.msu" C:\OSDCloud\CU\
-
-Write-Host "Set registry keys to force a reboot" -Foreground Green
-Set-ItemProperty -Path "HKLM:\System\Setup" -Name "SetupShutdownRequired" -Value 1 -Type DWORD
-Set-ItemProperty -Path "HKLM:\System\Setup" -Name "SetupType" -Value 0 -Type DWORD
-
-$UnattendXml = @'
-<?xml version="1.0" encoding="utf-8"?>
-<unattend xmlns="urn:schemas-microsoft-com:unattend">
-    <settings pass="specialize">
-        <component name="Microsoft-Windows-Deployment" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-            <RunSynchronous>
-                <RunSynchronousCommand wcm:action="add">
-                    <Order>1</Order>
-                    <Description>OSDCloud Specialize</Description>
-                    <Path>Powershell -ExecutionPolicy Bypass -Command Invoke-OSDSpecialize -Verbose</Path>
-                </RunSynchronousCommand>
-                <RunSynchronousCommand wcm:action="add">
-                    <Order>2</Order>
-                    <Description>OSDCloud Specialize</Description>
-                    <Path>CMD /C "C:\Windows\SysWOW64\DISM.exe /Online /Add-Package /PackagePath:C:\OSDCloud\CU\windows10.0-kb5016616-x64.cab /LogPath:C:\OSDCloud\CU\DISM_CU_08_W10.log /NoRestart"</Path>
-                </RunSynchronousCommand>
-            </RunSynchronous>
-        </component>
-    </settings>
-</unattend>
-'@
-
-$PantherUnattendPath = 'C:\Windows\Panther\'
-if (-NOT (Test-Path $PantherUnattendPath)) {
-    New-Item -Path $PantherUnattendPath -ItemType Directory -Force | Out-Null
-}
-$AuditUnattendPath = Join-Path $PantherUnattendPath 'Invoke-OSDSpecialize.xml'
-
-Write-Host -ForegroundColor Green "Set Unattend.xml at $AuditUnattendPath"
-$UnattendXml | Out-File -FilePath $AuditUnattendPath -Encoding utf8
 
 #=======================================================================
 #   Restart-Computer
