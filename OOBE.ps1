@@ -1,10 +1,5 @@
 [CmdletBinding()]
 param()
-#=================================================
-#Script Information
-$ScriptName = 'go.osdcloud.com/development'
-$ScriptVersion = '22.9.13.1'
-#=================================================
 #region Initialize
 
 #Start the Transcript
