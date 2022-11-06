@@ -92,8 +92,9 @@ Write-Host -ForegroundColor Red $AssignedComputerName
 Write-Host ""
 
 Write-Host -ForegroundColor Green "Create C:\ProgramData\OSDeploy\OSDeploy.AutopilotOOBE.json"
-$AutopilotOOBEJson = @'
+$AutopilotOOBEJson = @"
 {
+    "AssignedComputerName" : "$AssignedComputerName",
     "AddToGroup":  "AADGroupX",
     "Assign":  {
                    "IsPresent":  true
@@ -110,8 +111,7 @@ $AutopilotOOBEJson = @'
     "Run":  "NetworkingWireless",
     "Docs":  "https://google.com/",
     "Title":  "Autopilot Manual Register",
-'@
-$AutopilotOOBEJson += '"AssignedComputerName" : "' + $AssignedComputerName + '"}'
+"@
 
 If (!(Test-Path "C:\ProgramData\OSDeploy")) {
     New-Item "C:\ProgramData\OSDeploy" -ItemType Directory -Force | Out-Null
