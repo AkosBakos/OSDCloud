@@ -107,7 +107,8 @@ $AutopilotOOBEJson = @"
     "PostAction":  "Quit",
     "Run":  "NetworkingWireless",
     "Docs":  "https://google.com/",
-    "Title":  "AkosCloud Autopilot Register",
+    "Title":  "AkosCloud Autopilot Register"
+}
 "@
 
 If (!(Test-Path "C:\ProgramData\OSDeploy")) {
