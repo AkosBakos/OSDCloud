@@ -95,7 +95,7 @@ function OSDCloudLogic {
     Write-Host -ForegroundColor Cyan "Create C:\ProgramData\OSDeploy\OSDeploy.AutopilotOOBE.json"
     Write-Host -ForegroundColor Gray "Define Computername"
     $Serial = Get-WmiObject Win32_bios | Select-Object -ExpandProperty SerialNumber
-    $TargetComputername = $Serial.Substring(4,4)
+    $TargetComputername = $Serial.Substring(0,9)
 
     $AssignedComputerName = "$ComputerPrefix-AkosCloud-$TargetComputername"
     Write-Host -ForegroundColor Green $AssignedComputerName
