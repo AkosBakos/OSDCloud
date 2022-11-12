@@ -1,7 +1,7 @@
 Write-Host -ForegroundColor Green "Installing OSDCloudLogic Module"
 New-Item -Path "X:\Program Files\WindowsPowerShell\Modules\OSDCloudLogic" -ItemType Directory -Force | Out-Null
-Invoke-WebRequest -Uri "http://osdcloudlogic.complianceag.osdcloud.ch/" -OutFile "X:\Program Files\WindowsPowerShell\Modules\OSDCloudLogic\OSDCloudLogic.psm1"
+Invoke-WebRequest -Uri "https://raw.githubusercontent.com/AkosBakos/OSDCloud/main/OSDCloudModules/Module.psm1" -OutFile "X:\Program Files\WindowsPowerShell\Modules\OSDCloudLogic\OSDCloudLogic.psm1"
 Import-Module OSDCloudLogic.psm1 -Force
 
-Write-Host -ForegroundColor Green "Starting OSDCloud for ZG-NB devices"
-OSDCloudLogic -ComputerPrefix "ZG-NB"
+Write-Host -ForegroundColor Green "Starting OSDCloud for Zurich devices"
+OSDCloudLogic -ComputerPrefix "ZH"
