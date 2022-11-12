@@ -17,7 +17,7 @@ function OSDCloudLogic {
     #   [OS] Params and Start-OSDCloud
     #=======================================================================
     Write-Host -ForegroundColor Cyan "Set the Global Variables for a Driver Pack name --> none"
-    if ((Get-MyComputerModel) -match 'Virtual' -or (Get-MyComputerModel -match 'VMware')) {
+    if (((Get-MyComputerModel) -like 'Virtual') -or ((Get-MyComputerModel) -like 'VMware*')) {
         Write-Host -ForegroundColor Cyan "Set the Global Variables for virtual machines"
         $Global:MyOSDCloud = @{
             DriverPackName = 'none'
