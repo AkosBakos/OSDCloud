@@ -119,7 +119,7 @@ $AutopilotOOBEJson | Out-File -FilePath "C:\ProgramData\OSDeploy\OSDeploy.Autopi
 #================================================
 #  [PostOS] AutopilotOOBE CMD Command Line
 #================================================
-Write-Host -ForegroundColor Green "Create C:\Windows\System32\OOBE.cmd"
+Write-Host -ForegroundColor Green "Create C:\Windows\System32\OOBEAkos.cmd"
 $OOBECMD = @'
 PowerShell -NoL -Com Set-ExecutionPolicy RemoteSigned -Force
 Set Path = %PATH%;C:\Program Files\WindowsPowerShell\Scripts
@@ -134,7 +134,7 @@ Start /Wait PowerShell -NoL -C Invoke-WebPSScript https://tpm.osdcloud.ch
 Start /Wait PowerShell -NoL -C Invoke-WebPSScript https://cleanup.osdcloud.ch
 Start /Wait PowerShell -NoL -C Restart-Computer -Force
 '@
-$OOBECMD | Out-File -FilePath 'C:\Windows\System32\OOBE.cmd' -Encoding ascii -Force
+$OOBECMD | Out-File -FilePath 'C:\Windows\System32\OOBEAkos.cmd' -Encoding ascii -Force
 
 #================================================
 #  [PostOS] SetupComplete CMD Command Line
