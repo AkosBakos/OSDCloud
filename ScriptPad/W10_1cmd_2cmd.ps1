@@ -21,7 +21,7 @@ $Params = @{
     OSEdition = "Pro"
     OSLanguage = "de-de"
     ZTI = $true
-    Firmware = $true
+    Firmware = $false
 }
 Start-OSDCloud @Params
 
