@@ -16,6 +16,15 @@ Import-Module OSD -Force
 #=======================================================================
 #   [OS] Params and Start-OSDCloud
 #=======================================================================
+
+Write-Host -ForegroundColor Cyan "Set the Global Variables for a Driver Pack name --> none"
+$Global:MyOSDCloud = @{
+    DriverPackName = 'none'
+    #ApplyManufacturerDrivers = $false
+    #ApplyCatalogDrivers = $false
+    #ApplyCatalogFirmware = $false
+}
+
 $Params = @{
     OSVersion = "Windows 10"
     OSBuild = "21H2"
