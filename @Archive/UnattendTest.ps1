@@ -18,7 +18,7 @@ Import-Module OSD -Force
 #=======================================================================
 $Params = @{
     OSBuild = "20H2"
-    OSEdition = "Enterprise"
+    OSEdition = "Pro"
     OSLanguage = "en-us"
     ZTI = $true
 }
@@ -81,11 +81,11 @@ $AutopilotOOBEJson = @'
     "Assign":  {
                    "IsPresent":  true
                },
-    "GroupTag":  "Mittelschulen",
-    "AddToGroup": "sg-GYMKG",
+    "GroupTag":  "XXX",
+    "AddToGroup": "sg-XXX",
     "AddToGroupOptions":  [
-                    "sg-GYMKG",
-                    "sg-GYMWM"
+                    "sg-XXX",
+                    "sg-XXX"
     ],
     "Hidden":  [
                    "AssignedComputerName",
@@ -97,7 +97,7 @@ $AutopilotOOBEJson = @'
     "PostAction":  "Quit",
     "Run":  "NetworkingWireless",
     "Docs":  "https://google.com/",
-    "Title":  "EDUBS PoC Autopilot Register"
+    "Title":  "PoC Autopilot Register"
 }
 '@
 If (!(Test-Path "C:\ProgramData\OSDeploy")) {
