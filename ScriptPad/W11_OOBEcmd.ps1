@@ -149,6 +149,18 @@ $SetupCompleteCMD = @'
 $SetupCompleteCMD | Out-File -FilePath 'C:\Windows\Setup\Scripts\SetupComplete.cmd' -Encoding ascii -Force
 
 #=======================================================================
+#   Enable "Audit process tracking"
+#=======================================================================
+Write-Host -ForegroundColor Green "Get 'Detailed tracking' properties"
+C:\Windows\System32\auditpol.exe /get /category:"Detailed Tracking"
+
+Write-Host -ForegroundColor Green "Enable 'Audit process tracking'"
+C:\Windows\System32\auditpol.exe /set /category:"Detailed Tracking" /success:enable
+
+Write-Host -ForegroundColor Green "Get 'Audit process tracking' properties"
+C:\Windows\System32\auditpol.exe /get /category:"Detailed Tracking"
+
+#=======================================================================
 #   Restart-Computer
 #=======================================================================
 Write-Host  -ForegroundColor Green "Restarting in 20 seconds!"
