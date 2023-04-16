@@ -145,22 +145,10 @@ $OOBECMD | Out-File -FilePath 'C:\Windows\System32\OOBE.cmd' -Encoding ascii -Fo
 #================================================
 Write-Host -ForegroundColor Green "Create C:\Windows\Setup\Scripts\SetupComplete.cmd"
 $SetupCompleteCMD = @'
-powershell.exe -command set-execcutionpolicy remotesigned -force
-powershell.exe -command "& {IEX (IRM oobetasks.osdcloud.ch)}"
+powershell.exe -Command Set-ExeccutionPolicy RemoteSigned -Force
+powershell.exe -Command "& {IEX (IRM oobetasks.osdcloud.ch)}"
 '@
 $SetupCompleteCMD | Out-File -FilePath 'C:\Windows\Setup\Scripts\SetupComplete.cmd' -Encoding ascii -Force
-
-#=======================================================================
-#   Enable "Audit process tracking"
-#=======================================================================
-Write-Host -ForegroundColor Green "Get 'Detailed tracking' properties"
-C:\Windows\System32\auditpol.exe /get /category:"Detailed Tracking"
-
-Write-Host -ForegroundColor Green "Enable 'Audit process tracking'"
-C:\Windows\System32\auditpol.exe /set /category:"Detailed Tracking" /success:enable
-
-Write-Host -ForegroundColor Green "Get 'Audit process tracking' properties"
-C:\Windows\System32\auditpol.exe /get /category:"Detailed Tracking"
 
 #=======================================================================
 #   Restart-Computer
