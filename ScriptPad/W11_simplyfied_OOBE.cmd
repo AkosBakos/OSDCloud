@@ -120,9 +120,9 @@ If (!(Test-Path "C:\ProgramData\OSDeploy")) {
 $AutopilotOOBEJson | Out-File -FilePath "C:\ProgramData\OSDeploy\OSDeploy.AutopilotOOBE.json" -Encoding ascii -Force
 
 #================================================
-#  [PostOS] AutopilotOOBE CMD Command Line
+#  [PostOS] OOBE CMD Command Line
 #================================================
-Write-Host -ForegroundColor Green "Downloading Scripts for OOBE and specialize phase"
+Write-Host -ForegroundColor Green "Downloading and creating script for OOBE phase"
 Invoke-RestMethod https://oobetasks.osdcloud.ch | Out-File -FilePath 'C:\Windows\Setup\scripts\oobe.ps1' -Encoding ascii -Force
 
 $OOBECMD = @'
