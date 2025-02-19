@@ -131,7 +131,7 @@ $UnattendXml = @'
                 <RunSynchronousCommand wcm:action="add">
                     <Order>1</Order>
                     <Description>Start PS session</Description>
-                    <Path>start /wait powershell.exe -NoL -ExecutionPolicy Bypass</Path>
+                    <Path>PowerShell -ExecutionPolicy Bypass C:\Windows\Setup\scripts\autopilot.ps1</Path>
                 </RunSynchronousCommand>
             </RunSynchronous>
         </component>
