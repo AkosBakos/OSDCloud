@@ -157,6 +157,9 @@ $Panther = 'C:\Windows\Panther'
 $UnattendPath = "$Panther\Unattend.xml"
 $UnattendXml | Out-File -FilePath $UnattendPath -Encoding utf8 -Width 2000 -Force
 
+Write-DarkGrayHost "Downloading Scripts for OOBE and specialize phase"
+Invoke-RestMethod http://autopilot.homburger.osdcloud.ch | Out-File -FilePath 'C:\Windows\Setup\scripts\autopilot.ps1' -Encoding ascii -Force
+
 #================================================
 #  [PostOS] OOBE CMD Command Line
 #================================================
