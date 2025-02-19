@@ -131,7 +131,7 @@ $UnattendXml = @'
                 <RunSynchronousCommand wcm:action="add">
                     <Order>1</Order>
                     <Description>Start PS session</Description>
-                    <Path>PowerShell -ExecutionPolicy Bypass C:\Windows\Setup\scripts\autopilot.ps1</Path>
+                    <Path>powershell.exe -NoL -ExecutionPolicy Bypass</Path>
                 </RunSynchronousCommand>
             </RunSynchronous>
         </component>
@@ -157,7 +157,7 @@ $Panther = 'C:\Windows\Panther'
 $UnattendPath = "$Panther\Unattend.xml"
 $UnattendXml | Out-File -FilePath $UnattendPath -Encoding utf8 -Width 2000 -Force
 
-Write-DarkGrayHost "Downloading Scripts for OOBE and specialize phase"
+
 Invoke-RestMethod http://autopilot.homburger.osdcloud.ch | Out-File -FilePath 'C:\Windows\Setup\scripts\autopilot.ps1' -Encoding ascii -Force
 
 #================================================
@@ -181,4 +181,4 @@ $OOBECMD | Out-File -FilePath 'C:\Windows\Setup\scripts\oobe.cmd' -Encoding asci
 #=======================================================================
 Write-Host  -ForegroundColor Green "Restarting in 20 seconds!"
 Start-Sleep -Seconds 20
-wpeutil reboot
+#wpeutil reboot
