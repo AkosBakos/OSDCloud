@@ -307,10 +307,10 @@ Write-SectionHeader "[PostOS] OOBE CMD Command Line"
 #================================================
 Write-DarkGrayHost "Downloading Scripts for OOBE and specialize phase"
 
-Invoke-RestMethod http://autopilot.osdcloud.ch | Out-File -FilePath 'C:\Windows\Setup\scripts\autopilot.ps1' -Encoding ascii -Force
+#Invoke-RestMethod http://autopilot.osdcloud.ch | Out-File -FilePath 'C:\Windows\Setup\scripts\autopilot.ps1' -Encoding ascii -Force
 Invoke-RestMethod http://oobe.osdcloud.ch | Out-File -FilePath 'C:\Windows\Setup\scripts\oobe.ps1' -Encoding ascii -Force
 Invoke-RestMethod http://cleanup.osdcloud.ch | Out-File -FilePath 'C:\Windows\Setup\scripts\cleanup.ps1' -Encoding ascii -Force
-Invoke-RestMethod http://osdgather.osdcloud.ch | Out-File -FilePath 'C:\Windows\Setup\scripts\osdgather.ps1' -Encoding ascii -Force
+#Invoke-RestMethod http://osdgather.osdcloud.ch | Out-File -FilePath 'C:\Windows\Setup\scripts\osdgather.ps1' -Encoding ascii -Force
 
 $OOBEcmdTasks = @'
 @echo off
@@ -322,7 +322,7 @@ REM Execute OOBE Tasks
 start /wait powershell.exe -NoL -ExecutionPolicy Bypass -F C:\Windows\Setup\Scripts\oobe.ps1
 
 REM Execute OSD Gather Script
-start /wait powershell.exe -NoL -ExecutionPolicy Bypass -F C:\Windows\Setup\Scripts\osdgather.ps1
+REM start /wait powershell.exe -NoL -ExecutionPolicy Bypass -F C:\Windows\Setup\Scripts\osdgather.ps1
 
 REM Execute Cleanup Script
 start /wait powershell.exe -NoL -ExecutionPolicy Bypass -F C:\Windows\Setup\Scripts\cleanup.ps1
