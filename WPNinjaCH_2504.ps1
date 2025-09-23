@@ -123,7 +123,7 @@ Write-Host ($Global:WPNinjaCH | Out-String)
 
 $Global:MyOSDCloud = [ordered]@{
     MSCatalogFirmware   = [bool]$true
-    HPBIOSUpdate        = [bool]$true
+    #HPBIOSUpdate        = [bool]$true
     #IsOnBattery        = [bool]$false
 }
 Write-SectionHeader "MyOSDCloud variables"
